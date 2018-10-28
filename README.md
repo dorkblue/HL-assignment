@@ -12,11 +12,13 @@ Instructions for Client (Front-end) Assignment
 
 ---
 
-Visit link for featured pages
+Visit link (in localhost environment) for featured pages
 ------
-[Home](localhost:3000)
-[Locations & Apartments by Location](localhost:3000/locations)
-[Search & Filter](localhost:3000/search)
+[Home](http://localhost:3000)
+
+[Locations & Apartments by Location](http://localhost:3000/locations)
+
+[Search & Filter](http://localhost:3000/search)
 
 ---
 
@@ -80,6 +82,8 @@ Development Stage
     ```
 * Improved `Actions` and `Reducer` for Apartment and Location
 
+* Added `try catch` for thunk actions to catch and respond to errors
+
 * Reorganized some files and folders, separation of concern
     
     - Separate partial view components and components from view components
@@ -141,7 +145,9 @@ export default function(Profiles) {
 
 #### New 'Locations' Page, Apartments Filtered by Location
 
-Fixed `_id` query bug for Location Schema. Equality `_id` query for some reason do not work with Location Schema. As a **short term fix** & as a prioritization for **Client Assignment requirements**, following fix is applied for queries applicable for Location.
+Fixed `_id` query bug for Location Schema. Equality `_id` query for some reason do not work with Location Schema. 
+
+As a **short term fix** & as a prioritization for **Client Assignment requirements**, following fix is applied for queries applicable for Location.
 
 > Removed `addQueryResolvers(rootResolvers.Query, Locations, 'location', 'locations')` and added the following
 ```javascript
@@ -190,11 +196,71 @@ export default function(Users, Locations) {
 
 #### New 'Search' Page, by Location, filter by [size, price, amenities, details, services]
 
-I contemplated between working with existing `Query`s provided or making a new Search Apartment query. Decided against the former because of how inefficient it may be to run filter function on the client side to get the expected search results.
+I contemplated between working with existing `apartments` query provided or making a new Search Apartment query. 
+
+Decided against the former because of how inefficient it may be to run filter function on the client side to get the expected search results.
+
+Using the existing `apartments` query in production also means that unrequired data items will be retrieved (and then filtered manually on the client side) alongside with the actual data items wanted by users.
+
+Hence the decision for the latter solution.
 
 > searchApartments query
 ```javascript
-// client/src/services/graphql/graphql.resolvers.js
+// client/src/queries/apartmentsQueries.js
+
+export const SEARCH_APARTMENTS = gql`
+  query SearchApartments(
+    $location: String
+    $size: Int
+    $price: Int
+    $amenities: [String]
+    $services: [String]
+    $details_bathrooms: Int 
+    $details_rooms: Int 
+    $details_floor: Int 
+    $details_bedrooms: Int
+  ) {
+    searchApartments(
+      location: $location
+      size: $size
+      price: $price
+      amenities: $amenities
+      services: $services
+      
+      # gql does not accept dot notation for object
+      
+      details_bathrooms: $details_bathrooms
+      details_rooms: $details_rooms 
+      details_floor: $details_floor 
+      details_bedrooms: $details_bedrooms
+    ) {
+      items {
+        _id
+        owner {
+          _id
+          email
+        }
+        title
+        location {
+          _id
+          title
+        }
+        size
+        price
+        amenities
+        details {
+          bathrooms
+          bedrooms
+          floor
+          rooms
+        }
+        images
+      }
+    }
+  }
+`
+
+// server/src/services/graphql/graphql.resolvers.js
 
 const rootResolvers = {
     Query: {
@@ -205,20 +271,6 @@ const rootResolvers = {
             ex: to query for apartments with 2 bathrooms & 1 floor
 
                 query: {
-                    "details.bathrooms": 2,
-                    "details.floor": 1
-                }
-
-            below function reduces this
-
-                details: {
-                    bathrooms: 2,
-                    floor: 1
-                }
-
-            to this
-            
-                {
                     "details.bathrooms": 2,
                     "details.floor": 1
                 }
@@ -270,6 +322,23 @@ const rootResolvers = {
   }
 ```
 
+Search filters are pushed to address query string everytime there is a request for search data. Similarly, addresses with query string will be parsed, and search results corresponding to the query will be returned.
+
+Example
+> http://localhost:3000/search?locality=507F191e810c19729De860eA&size=71&amenities[0]=fridge&details.rooms=2
+
+Link above will return Apartments in Cologne, with size < 71, with fridge, and 2 rooms.
+
+#### To-dos, Future Improvements
+* React component prop validation and default props
+    
+* Use `apollo-link-state` and and `in-memory-cache` for a central application state management, and possibly removing Redux from the equation
+
+#### Disclaimer
+* Current repo is only optimized for the Client Front End part of the assignment
+* I've made some necessary bug fixes (documented above) to the server code in order to attempt some of the requirements, otherwise unattemptable
+* I'm unsure if the `searchApartments` query that I added is actually allowed for the test, but in my defence it was more logical to do so and more applicable to production environment
+* I've made no changes to any `webpack` configuration or `eject` the app because the configurations are already done by `create-react-app` and due to the lack of time
 
 Contact
 ------
