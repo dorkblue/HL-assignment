@@ -329,12 +329,14 @@ Example
 
 Link above will return Apartments in Cologne, with size < 71, with fridge, and 2 rooms.
 
-#### To-dos, Future Improvements
+To-dos, Future Improvements
+------
 * React component prop validation and default props
     
 * Use `apollo-link-state` and and `in-memory-cache` for a central application state management, and possibly removing Redux from the equation
 
-#### Disclaimer
+Disclaimer
+------
 * Current repo is only optimized for the Client Front End part of the assignment
 * I've made some necessary bug fixes (documented above) to the server code in order to attempt some of the requirements, otherwise unattemptable
 * I'm unsure if the `searchApartments` query that I added is actually allowed for the test, but in my defence it was more logical to do so and more applicable to production environment
