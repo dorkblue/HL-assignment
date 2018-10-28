@@ -54,7 +54,6 @@ export const fetchLocationsList = () => async dispatch => {
 }
 
 export const fetchLocation = _id => async dispatch => {
-  console.log({ location: _id })
   try {
     dispatch(setLocationsLoading())
     const { data } = await client.query({
@@ -64,11 +63,9 @@ export const fetchLocation = _id => async dispatch => {
       }
     })
 
-    console.log({ data })
     dispatch(setLocationsLoading(false))
     dispatch(setLocation(data.location))
   } catch (error) {
-    console.error('location', error)
     dispatch(setLocationsError())
   }
 }
