@@ -1,6 +1,21 @@
 Homelike Interview Assignment
 =====
 
+#### How to use
+1. Clone repo
+2. cd server && npm install && npm start
+3. cd client && npm install && npm start
+4. browser will be launched, app will be running on localhost
+
+#### Visit link (in localhost environment) for featured pages
+[Home](http://localhost:3000)
+
+[Locations & Apartments by Location](http://localhost:3000/locations)
+
+[Search & Filter](http://localhost:3000/search)
+
+---
+
 Instructions for Client (Front-end) Assignment
 ------
 1. Invest some time to refactor the current code and make it better
@@ -12,17 +27,7 @@ Instructions for Client (Front-end) Assignment
 
 ---
 
-Visit link (in localhost environment) for featured pages
-------
-[Home](http://localhost:3000)
-
-[Locations & Apartments by Location](http://localhost:3000/locations)
-
-[Search & Filter](http://localhost:3000/search)
-
----
-
-Development Stage
+Development
 ------
 
 #### Code Refactoring
