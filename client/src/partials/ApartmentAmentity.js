@@ -7,7 +7,7 @@ export default class ApartmentAmentityView extends React.Component {
     apartment.amenities.map((item, index) => {
       if (index < limit) {
         amentities.push(
-          <span className="_1h9l4w0vvX6d56ZnJ3NLod" key={item}>
+          <span className="_1h9l4w0vvX6d56ZnJ3NLod" key={`${item}-${index}`}>
             <i />
             <span>{item}</span>
           </span>

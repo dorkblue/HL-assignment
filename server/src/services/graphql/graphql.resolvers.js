@@ -56,13 +56,28 @@ export default function() {
             query
           })
         ).then(result => ({ total: result.length, items: result }))
+      },
+      // _id query is performed with a $in operator
+      location: (root, args, context) => {
+        const _id = args._id ? { _id: { $in: [args._id] } } : {}
+
+        return Locations.find(
+          Object.assign({}, context, { query: Object.assign({}, _id) })
+        ).then(result => result[0])
+      },
+      locations: (root, args, context) => {
+        return Locations.find(Object.assign({}, context, { query: args })).then(
+          result => {
+            return { total: result.length, items: result }
+          }
+        )
       }
     }
   }
 
   addQueryResolvers(rootResolvers.Query, Users, 'user', 'users')
   addQueryResolvers(rootResolvers.Query, Apartments, 'apartment', 'apartments')
-  addQueryResolvers(rootResolvers.Query, Locations, 'location', 'locations')
+  // addQueryResolvers(rootResolvers.Query, Locations, 'location', 'locations')
 
   return merge(
     rootResolvers,

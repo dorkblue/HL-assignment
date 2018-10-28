@@ -101,7 +101,6 @@ export const searchApartments = location => async (dispatch, getState) => {
       query: SEARCH_APARTMENTS,
       variables: {
         location,
-        // ...rest,
         ...(size !== '' ? { size } : {}),
         ...(price !== '' ? { price } : {}),
         ...(amenities.length > 0 ? { amenities } : {}),
@@ -121,7 +120,6 @@ export const searchApartments = location => async (dispatch, getState) => {
     dispatch(setListFilters(filters))
     dispatch(setApartmentsList(data.searchApartments.items))
   } catch (error) {
-    console.error(error)
     dispatch(setApartmentsError())
   }
 }

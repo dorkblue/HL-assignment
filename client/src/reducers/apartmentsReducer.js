@@ -109,7 +109,9 @@ const searchFilters = (state = initialState.search.filters, action) => {
 
 const loading = (state = initialState.loading, action) => {
   switch (action.type) {
-    case AP_APARTMENTS_LOADING || AP_APARTMENTS_ERROR:
+    case AP_APARTMENTS_LOADING /*  || AP_APARTMENTS_ERROR */:
+      return action.loading
+    case AP_APARTMENTS_ERROR:
       return action.loading
     default:
       return state
@@ -118,7 +120,9 @@ const loading = (state = initialState.loading, action) => {
 
 const error = (state = initialState.error, action) => {
   switch (action.type) {
-    case AP_APARTMENTS_LOADING || AP_APARTMENTS_ERROR:
+    case AP_APARTMENTS_LOADING:
+      return action.error
+    case AP_APARTMENTS_ERROR:
       return action.error
     default:
       return state

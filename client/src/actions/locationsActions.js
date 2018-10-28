@@ -5,10 +5,7 @@ import {
   AP_LOCATIONS_ERROR,
   AP_LOCATIONS_LOADING
 } from './types'
-import {
-  ACTIVE_LOCATIONS,
-  LOCATION
-} from '../queries/locationsQueries'
+import { ACTIVE_LOCATIONS, LOCATION } from '../queries/locationsQueries'
 
 const setLocationsLoading = (loading = true) => ({
   type: AP_LOCATIONS_LOADING,
@@ -57,6 +54,7 @@ export const fetchLocationsList = () => async dispatch => {
 }
 
 export const fetchLocation = _id => async dispatch => {
+  console.log({ location: _id })
   try {
     dispatch(setLocationsLoading())
     const { data } = await client.query({
@@ -66,9 +64,11 @@ export const fetchLocation = _id => async dispatch => {
       }
     })
 
+    console.log({ data })
     dispatch(setLocationsLoading(false))
     dispatch(setLocation(data.location))
   } catch (error) {
+    console.error('location', error)
     dispatch(setLocationsError())
   }
 }

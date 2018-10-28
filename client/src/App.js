@@ -7,7 +7,8 @@ import client from './ApolloClient'
 import store from './store'
 import ApartmentView from './views/ApartmentView'
 import ApartmentSearchView from './views/ApartmentSearchView'
-import ApartmentsByLocationsView from './views/ApartmentsByLocationsView'
+import LocationsView from './views/LocationsView'
+import ApartmentsByLocation from './views/ApartmentsByLocation'
 
 class App extends Component {
   render() {
@@ -16,22 +17,22 @@ class App extends Component {
         <Provider store={store}>
           <Router>
             <Switch>
-              <Route exact path="/" component={HomeView} />
               <Route
                 exact
-                path="/search"
-                component={ApartmentSearchView}
+                strict
+                path="/locations/:locationId"
+                component={ApartmentsByLocation}
               />
               <Route
                 exact
-                path="/locations"
-                component={ApartmentsByLocationsView}
-              />
-              <Route
-                exact
+                strict
                 path="/apartments/:apartmentId"
                 component={ApartmentView}
               />
+              <Route exact strict path="/locations" component={LocationsView} />
+              <Route exact path="/search" component={ApartmentSearchView} />
+              <Route exact path="/" component={HomeView} />
+              <Route render={() => <div>Page not found</div>} />
             </Switch>
           </Router>
         </Provider>

@@ -1,5 +1,4 @@
 export default function(Users, Locations) {
-  console.log('in apartment resolvers')
   const apartmentsResolvers = {
     Apartments: {
       owner: apartment => {
@@ -9,7 +8,7 @@ export default function(Users, Locations) {
       },
       location: apartment => {
         return Locations.find({
-          // query: { _id: apartment.location }
+          // _id query is performed with a $in operator
           query: { _id: { $in: [apartment.location] } }
         }).then(result => result[0])
       },

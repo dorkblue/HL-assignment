@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import Overlay from './Overlay'
 
-class SearchFilter extends React.Component {
+class FilterDropdown extends React.Component {
   state = {
     isDropdownVisible: false
   }
@@ -111,4 +111,4 @@ const Confirm = styled(Button)`
   color: #fff;
 `
 
-export default SearchFilter
+export default FilterDropdown

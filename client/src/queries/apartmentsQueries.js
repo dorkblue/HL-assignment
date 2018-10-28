@@ -7,6 +7,9 @@ export const SEARCH_APARTMENTS = gql`
     $price: Int
     $amenities: [String]
     $services: [String]
+
+    # gql does not accept dot notation for object
+    
     $details_bathrooms: Int 
     $details_rooms: Int 
     $details_floor: Int 

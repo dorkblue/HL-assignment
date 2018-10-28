@@ -10,15 +10,13 @@ import {
   fetchLocationsList
 } from '../actions/locationsActions'
 import ApartmentSearch from '../partials/ApartmentSearch'
-import ApartmentTileView from '../partials/ApartmentTileItem'
+import ApartmentTileItem from '../partials/ApartmentTileItem'
 
 class ApartmentSearchView extends React.Component {
   state = {}
 
-  componentDidMount = () => {
-    const { locality = null, ...filters } = this.parseQueryString(
-      this.props.location.search
-    )
+  componentDidMount = async () => {
+    const { locality = null, ...filters } = qs.parse(this.props.location.search)
 
     const {
       size = '',
@@ -28,7 +26,7 @@ class ApartmentSearchView extends React.Component {
       details = {}
     } = filters
 
-    this.props.setSearchFilters({
+    await this.props.setSearchFilters({
       ...(size ? { size } : {}),
       ...(price ? { price } : {}),
       ...(Array.isArray(amenities) && amenities.length ? { amenities } : {}),
@@ -49,10 +47,6 @@ class ApartmentSearchView extends React.Component {
     this.props.searchApartments(locality)
   }
 
-  parseQueryString = (string = '') => {
-    return qs.parse(string)
-  }
-
   render() {
     const { apartments, loading, error } = this.props
 
@@ -62,9 +56,9 @@ class ApartmentSearchView extends React.Component {
         <div className="col-12 float-left">
           <div className="view-apartment-list">
             {loading && <div>Loading</div>}
-            {error && <div>An error has occured</div>}
+            {error && <div>{error}</div>}
             {apartments.allIds.map(_id => (
-              <ApartmentTileView apartment={apartments.byIds[_id]} key={_id} />
+              <ApartmentTileItem apartment={apartments.byIds[_id]} key={_id} />
             ))}
           </div>
         </div>
